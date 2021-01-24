@@ -3,14 +3,14 @@ package tictactoe;
 import java.util.Scanner;
 
 public class Grid {
-    private static final String[][] grid = {{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
-    private static final Scanner sc = new Scanner(System.in);
-    private static boolean winO = false;
-    private static boolean winX = false;
-    private static int baseToChangeChar = 1;
-    private static String XO = "X";
+    private  final String[][] grid = {{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
+    private  final Scanner sc = new Scanner(System.in);
+    private  boolean winO = false;
+    private  boolean winX = false;
+    private  int baseToChangeChar = 1;
+    private  String XO = "X";
 
-    public static void run() {
+    public  void run() {
         boolean isNoWin = true;
         printGrid();
         while ((isNoWin)) {
@@ -39,12 +39,12 @@ public class Grid {
         sc.close();
     }
 
-    private static void changeChar() {
+    private  void changeChar() {
         baseToChangeChar++;
         XO = baseToChangeChar % 2 == 0 ? "O" : "X";
     }
 
-    private static void input() {
+    private  void input() {
         int i;
         int j;
         System.out.print("Enter the coordinates: ");
@@ -58,7 +58,7 @@ public class Grid {
         }
     }
 
-    private static void chekEmptyCell(int i, int j) {
+    private  void chekEmptyCell(int i, int j) {
         if (i > 3 || j > 3) {
             System.out.println("Coordinates should be from 1 to 3!");
             input();
@@ -70,14 +70,14 @@ public class Grid {
         }
     }
 
-    public static String run(String s) {   //to tests
+    public  String run(String s) {   //to tests
         testFillGrid(s);
         winO = checkWin("O");
         winX = checkWin("X");
         return printWin();
     }
 
-    private static String printWin() {
+    private  String printWin() {
         if (checkImpossible()) {
             return "Impossible";
         } else if (winO) {
@@ -91,7 +91,7 @@ public class Grid {
         }
     }
 
-    private static boolean checkImpossible() {
+    private  boolean checkImpossible() {
         int countX = 0;
         int countO = 0;
         for (int i = 0; i < 3; i++) {
@@ -109,7 +109,7 @@ public class Grid {
         return winO && winX;
     }
 
-    private static boolean checkEmptyCellsToPlay() {
+    private  boolean checkEmptyCellsToPlay() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (grid[i][j].equals(" ")) {
@@ -120,7 +120,7 @@ public class Grid {
         return false;
     }
 
-    private static boolean checkWin(String s) {
+    private  boolean checkWin(String s) {
         int countVertical = 0;
         int countHorizontal = 0;
         int cross = 0;
@@ -163,7 +163,7 @@ public class Grid {
         return false;
     }
 
-    private static void printGrid() {
+    private  void printGrid() {
         System.out.println("---------");
         for (String[] r : grid) {
             System.out.print("| ");
@@ -175,7 +175,7 @@ public class Grid {
         System.out.println("---------");
     }
 
-    private static void testFillGrid(String s) {
+    private  void testFillGrid(String s) {
         for (int i = 0, counter = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++, counter++) {
                 grid[i][j] = String.valueOf(s.charAt(counter));
