@@ -3,21 +3,75 @@ package tictactoe;
 import java.util.Scanner;
 
 public class Grid {
-    private static final String[][] grid = new String[3][3];
+    private static final String[][] grid = {{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
+    private static final Scanner sc = new Scanner(System.in);
     private static boolean winO = false;
     private static boolean winX = false;
+    private static int baseToChangeChar = 1;
+    private static String XO = "X";
 
     public static void run() {
-        System.out.println("Enter cells: ");
-        firstFillGrid();
-        winO = checkWin("O");
-        winX = checkWin("X");
+        boolean isNoWin = true;
+        printGrid();
+        while ((isNoWin)) {
+                input();
+                changeChar();
+                if (checkWin("X")) {
+                    winX = true;
+                    isNoWin = false;
+                } else {
+                    if (!checkEmptyCellsToPlay()) {
+                        isNoWin = false;
+                    } else {
+                    printGrid();
+                    input();
+                    if (checkWin("O")) {
+                        winO = true;
+                        isNoWin = false;
+                    }
+                    printGrid();
+                    changeChar();
+                }
+            }
+        }
         printGrid();
         System.out.println(printWin());
+        sc.close();
+    }
+
+    private static void changeChar() {
+        baseToChangeChar++;
+        XO = baseToChangeChar % 2 == 0 ? "O" : "X";
+    }
+
+    private static void input() {
+        int i;
+        int j;
+        System.out.print("Enter the coordinates: ");
+        try {
+            i = Integer.parseInt(sc.next());
+            j = Integer.parseInt(sc.next());
+            chekEmptyCell(i, j);
+        } catch (NumberFormatException e) {
+            System.out.println("You should enter numbers!");
+            input();
+        }
+    }
+
+    private static void chekEmptyCell(int i, int j) {
+        if (i > 3 || j > 3) {
+            System.out.println("Coordinates should be from 1 to 3!");
+            input();
+        } else if (grid[i - 1][j - 1].equals("X") || grid[i - 1][j - 1].equals("O")) {
+            System.out.println("This cell is occupied! Choose another one!");
+            input();
+        } else {
+            grid[i - 1][j - 1] = XO;
+        }
     }
 
     public static String run(String s) {   //to tests
-        firstFillGrid(s);
+        testFillGrid(s);
         winO = checkWin("O");
         winX = checkWin("X");
         return printWin();
@@ -30,7 +84,7 @@ public class Grid {
             return "O wins";
         } else if (winX) {
             return "X wins";
-        } else if (checkEmpty()) {
+        } else if (checkEmptyCellsToPlay()) {
             return "Game not finished";
         } else {
             return "Draw";
@@ -55,10 +109,10 @@ public class Grid {
         return winO && winX;
     }
 
-    private static boolean checkEmpty() {
+    private static boolean checkEmptyCellsToPlay() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (grid[i][j].equals("_")) {
+                if (grid[i][j].equals(" ")) {
                     return true;
                 }
             }
@@ -121,17 +175,7 @@ public class Grid {
         System.out.println("---------");
     }
 
-    private static void firstFillGrid() {
-        Scanner sc = new Scanner(System.in);
-        String string = sc.nextLine();
-        for (int i = 0, counter = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++, counter++) {
-                grid[i][j] = String.valueOf(string.charAt(counter));
-            }
-        }
-    }
-
-    private static void firstFillGrid(String s) {
+    private static void testFillGrid(String s) {
         for (int i = 0, counter = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++, counter++) {
                 grid[i][j] = String.valueOf(s.charAt(counter));
@@ -139,5 +183,3 @@ public class Grid {
         }
     }
 }
-
-
